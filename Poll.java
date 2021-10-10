@@ -1,8 +1,4 @@
-enum PollStatus {
-  created,
-  running,
-  released
-}
+import java.util.Arrays;
 
 public class Poll {
 
@@ -42,11 +38,11 @@ public class Poll {
     return status;
   }
 
-  public void setName(name) {
+  public void setName(String name) {
     this.name = name;
   }
 
-  public void setQuestion(question) {
+  public void setQuestion(String question) {
     this.question = question;
   }
 
@@ -54,8 +50,14 @@ public class Poll {
     this.choices = Arrays.copyOf(choices, choices.length);
   }
 
-  public void setVotes(int idx, int num) {
-    this.votes[idx] = num;
+  public void setVotes() {
+    for (int i = 0; i < this.votes.length; ++i) {
+      this.votes[i] = 0;
+    }
+  }
+
+  public void setStatus(PollStatus status) {
+    this.status = status;
   }
 
 }

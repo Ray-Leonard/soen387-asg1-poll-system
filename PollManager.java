@@ -7,6 +7,17 @@ public class PollManager {
   }
 
   public void UpdatePoll(String name, String question, String[] choices) {
-    
+    poll.setName(name);
+    poll.setQuestion(question);
+    poll.setChoices(choices);
+    poll.setVotes();
+    poll.setStatus(PollStatus.created);
+  }
+
+  public void ClearPoll() {
+    poll.setVotes();
+    if(poll.getStatus().equals(PollStatus.released)) {
+      poll.setStatus(PollStatus.created);
+    }
   }
 }
