@@ -35,7 +35,7 @@ public class Poll {
 
   public int[] getVotes() {
     int[] votes = Arrays.copyOf(this.votes, this.votes.length);
-    return voites;
+    return votes;
   }
 
   public PollStatus getStatus() {
@@ -57,5 +57,5 @@ public class Poll {
   public void setVotes(int idx, int num) {
     this.votes[idx] = num;
   }
-  
+
 }
