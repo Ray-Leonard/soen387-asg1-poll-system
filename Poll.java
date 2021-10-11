@@ -25,7 +25,7 @@ public class Poll {
   }
 
   public String[] getChoices() {
-    String[] choices = Arrays.copyOf(this.choices, this.choices.length)
+    String[] choices = Arrays.copyOf(this.choices, this.choices.length);
     return choices;
   }
 
@@ -50,10 +50,18 @@ public class Poll {
     this.choices = Arrays.copyOf(choices, choices.length);
   }
 
-  public void setVotes() {
+  public void clearVotes() {
     for (int i = 0; i < this.votes.length; ++i) {
       this.votes[i] = 0;
     }
+  }
+
+  public void setVotes(int choice) {
+    this.votes[choice]++;
+  }
+
+  public void setVotes() {
+    this.votes = new int[this.choices.length];
   }
 
   public void setStatus(PollStatus status) {
