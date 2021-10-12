@@ -1,4 +1,7 @@
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Poll {
 
@@ -7,6 +10,8 @@ public class Poll {
   private String[] choices;
   private int[] votes;
   private PollStatus status;
+  private Map<String, Integer> participant = new HashMap<>();
+  private Date releaseDate;
 
   public Poll(String name, String question, String[] choices) {
     this.name = name;
@@ -38,6 +43,11 @@ public class Poll {
     return status;
   }
 
+  public Date getReleaseDate() {
+    Date date = new Date(this.releaseDate.getTime());
+    return date;
+  }
+
   public void setName(String name) {
     this.name = name;
   }
@@ -66,6 +76,15 @@ public class Poll {
 
   public void setStatus(PollStatus status) {
     this.status = status;
+  }
+
+  public void setReleasedDate(Date date) {
+    this.releaseDate = new Date(date.getTime());
+  }
+
+  public void vote(String participant, int choice) {
+    this.participant.put(participant, choice);
+    this.votes[choice]++;
   }
 
 }
