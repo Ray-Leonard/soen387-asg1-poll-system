@@ -95,6 +95,55 @@
             }
         }
     %>
+    <%
+        if("post".equalsIgnoreCase(request.getMethod()) && request.getParameter("release")!=null){
+            if(p.getPoll_status()== Poll.status.running)
+            {
+                p.release_Poll();
+            }
+            else{
+                out.println("Error! Your poll status is not running!");
+            }
+        }
+    %>
+    <%
+        if("post".equalsIgnoreCase(request.getMethod()) && request.getParameter("unrelease")!=null){
+            if(p.getPoll_status()== Poll.status.released)
+            {
+                p.unrelease_Poll();
+            }
+            else{
+                out.println("Error! Your poll status is not released!");
+            }
+        }
+    %>
+
+    <%
+        if("post".equalsIgnoreCase(request.getMethod()) && request.getParameter("clear")!=null){
+            if(p.getPoll_status()== Poll.status.released || p.getPoll_status()== Poll.status.running )
+            {
+                p.clear_Poll();
+            }
+            else{
+                out.println("Error! Your poll status is not released or running!");
+            }
+        }
+%>
+
+
+    <%
+        if("post".equalsIgnoreCase(request.getMethod()) && request.getParameter("close")!=null){
+            if(p.getPoll_status()== Poll.status.released)
+            {
+                 p.close_Poll();
+                 RequestDispatcher rd = request.getRequestDispatcher("create.jsp");
+                 rd.forward(request,response);
+            }
+            else{
+                 out.println("Error! Your poll status is not released!");
+                }
+        }
+    %>
     <div class="row">
         <div class="col-sm-10">
             <table id="tbl-student" class="table table-responsive table-bordered" cellpadding = "0" width="100%">
@@ -132,13 +181,12 @@
                     <td><%=str[1]%></td>
                     <td><%=str[2]%></td>
                     <td><%=p.getPoll_status()%> </td>
-                    <td><a href="update.jsp">Update</a></td>
-                    <td><a href="run.jsp">Run</a></td>
-
-                    <td><a href="ClearPoll">Clear</a></td>
-                    <td><a href="ReleasePoll">Release</a></td>
-                    <td><a href="UnReleasePoll">UnRelease</a></td>
-                    <td><a href="ClosePoll">Close</a></td>
+                    <td><button class="btn-outline-warning"><a href="update.jsp">Update</a></button></td>
+                    <td><button class="btn-outline-warning"><a href="run.jsp">Run</a></button></td>
+                    <td><button class="btn-outline-warning"><a href="clear.jsp">Clear</a></button></td>
+                    <td><button class="btn-outline-warning"><a href="release.jsp">Release</a></button></td>
+                    <td><button class="btn-outline-warning"><a href="unrelease.jsp">UnRelease</a></button></td>
+                    <td><button class="btn-outline-warning"><a href="close.jsp">Close</a></button></td>
 
                 </tr>
 

@@ -1,8 +1,10 @@
 package com.example.pollsystemproject;
 
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 
@@ -66,10 +68,22 @@ public class Poll  implements Serializable {
     }
 
     public void clear_Poll(){
-        //to do
+        Enumeration<String> keys = this.getChoice().keys();
+        int i =0;
+        while(keys.hasMoreElements()){
+            this.getChoice().replace(keys.nextElement(), 0);
+            i++;
+        }
+        if(this.poll_status == status.released){
+            this.setPoll_status(status.created);
+        }
     }
 
     public void close_Poll(){
+        this.setTitle(null);
+        this.setQuestion(null);
+        this.setChoice(null);
+        this.setPoll_status(null);
 
     }
     public void run_Poll(){
@@ -77,10 +91,10 @@ public class Poll  implements Serializable {
 
     }
     public void release_Poll(){
-
+        this.setPoll_status(status.released);
     }
     public void unrelease_Poll(){
-
+        this.setPoll_status(status.running);
     }
     public void vote(int id, String choice){
 
