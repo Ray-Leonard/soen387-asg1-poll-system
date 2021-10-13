@@ -26,7 +26,8 @@
         response.sendRedirect("index.jsp");
     }
 %>
-<h1>Welcome... ${username} to Poll Management system</h1>
+<h1>Welcome... ${username} to Poll Management system</h1><br>
+<h2>Create a Poll</h2><br>
 <div class="row">
     <div class="col-sm-4">
         <jsp:useBean id="p" class="com.example.pollsystemproject.Poll" scope="application">

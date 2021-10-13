@@ -27,7 +27,7 @@
         response.sendRedirect("index.jsp");
     }
 %>
-<h1>Display the current Poll</h1>
+<h2>Display the current Poll</h2>
 
 
     <jsp:useBean id="p" class="com.example.pollsystemproject.Poll" scope="application">
@@ -82,6 +82,19 @@
                 }
             }
     %>
+    <%
+        if("post".equalsIgnoreCase(request.getMethod()) && request.getParameter("run")!=null){
+            if(p.getPoll_status()== Poll.status.created)
+            {
+    %>
+    <%
+        p.run_Poll();
+    %>
+    <%
+            }else{out.println("Error! Your poll status is not created!");
+            }
+        }
+    %>
     <div class="row">
         <div class="col-sm-10">
             <table id="tbl-student" class="table table-responsive table-bordered" cellpadding = "0" width="100%">
@@ -120,7 +133,8 @@
                     <td><%=str[2]%></td>
                     <td><%=p.getPoll_status()%> </td>
                     <td><a href="update.jsp">Update</a></td>
-                    <td><a href="RunPoll">Run</a></td>
+                    <td><a href="run.jsp">Run</a></td>
+
                     <td><a href="ClearPoll">Clear</a></td>
                     <td><a href="ReleasePoll">Release</a></td>
                     <td><a href="UnReleasePoll">UnRelease</a></td>
@@ -129,7 +143,7 @@
                 </tr>
 
             </table>
-            
+
         </div>
     </div>
 <div align = "right">

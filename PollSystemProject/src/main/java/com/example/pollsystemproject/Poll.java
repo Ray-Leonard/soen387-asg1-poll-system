@@ -72,16 +72,17 @@ public class Poll  implements Serializable {
     public void close_Poll(){
 
     }
-    public void Run_Poll(){
+    public void run_Poll(){
+        this.setPoll_status(status.running);
 
     }
-    public void Release_Poll(){
+    public void release_Poll(){
 
     }
-    public void Unrelease_Poll(){
+    public void unrelease_Poll(){
 
     }
-    public void Vote(int id, String choice){
+    public void vote(int id, String choice){
 
     }
     public Hashtable<String, Integer> get_Poll_Result(){

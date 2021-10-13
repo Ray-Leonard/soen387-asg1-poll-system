@@ -11,7 +11,7 @@
 <html>
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
-    <title>update</title>
+    <title>Run</title>
     <link href = "bootstrap/css/bootstrap.css" rel = "stylesheet" type="text/css">
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 </head>
@@ -27,7 +27,7 @@
         response.sendRedirect("index.jsp");
     }
 %>
-<h2>Update a Poll</h2><br>
+<h2>Run a Poll</h2><br>
 <div class="row">
     <div class="col-sm-4">
         <jsp:useBean id="p" class="com.example.pollsystemproject.Poll" scope="application">
@@ -45,33 +45,31 @@
         <form   action="display.jsp" method="post">
             <div align="left">
                 <label class="form-label">Title: </label>
-                <input type="text" class="form-control" value=<%=p.getTitle()%> name="title" required>
+                <input type="text" class="form-control" placeholder= <%=p.getTitle()%> name="title" disabled>
             </div><br>
             <div align="left" >
                 <label class="form-label">Question: </label>
-                <input type="text" class="form-control" value=<%=p.getQuestion()%> name="question" required>
+                <input type="text" class="form-control" placeholder=<%=p.getQuestion()%> name="question" disabled>
             </div><br>
             <div align="left" >
                 <label class="form-label">Choice1: </label>
-                <input type="text" class="form-control" value=<%=str[0]%> name="choice1" required>
+                <input type="text" class="form-control" placeholder=<%=str[0]%> name="choice1" disabled>
             </div><br>
             <div align="left" >
                 <label class="form-label">Choice2: </label>
-                <input type="text" class="form-control" value=<%=str[1]%> name="choice2" required>
+                <input type="text" class="form-control" placeholder=<%=str[1]%> name="choice2" disabled>
             </div><br>
             <div align="left" >
                 <label class="form-label">Choice3: </label>
-                <input type="text" class="form-control" value=<%=str[2]%> name="choice3" required>
+                <input type="text" class="form-control" placeholder=<%=str[2]%> name="choice3" disabled>
             </div><br>
-            <input type="submit" id="update" value="Update" name="update" class="btn btn-info">
+            <input type="submit" id="run" value="Run" name="run" class="btn btn-info">
 
         </form>
         <div align = "right">
-        <p><a href="display.jsp">Click Back</a> </p>
+            <p><a href="display.jsp">Click Back</a> </p>
         </div>
     </div>
-
-
 </div>
 <div align = "right">
     <form action="Logout" method="post">
