@@ -1,6 +1,6 @@
 package com.example.pollsystemproject;
 
-import java.io.IOException;
+
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.Hashtable;
@@ -12,7 +12,7 @@ public class Poll  implements Serializable {
     private String title;
     private String question;
     private status poll_status;
-    private String[] choice;
+    private Hashtable<String,Integer> choice;
     public enum status{
         created,running,released
     }
@@ -41,15 +41,16 @@ public class Poll  implements Serializable {
         this.poll_status = poll_status;
     }
 
-    public String[] getChoice() {
+    public Hashtable<String,Integer> getChoice() {
+
         return choice;
     }
 
-    public void setChoice(String[] choice) {
+    public void setChoice(Hashtable<String,Integer> choice) {
         this.choice = choice;
     }
 
-    public void create_Poll(String title, String question, String[] choice)  {
+    public void create_Poll(String title, String question, Hashtable<String,Integer> choice)  {
 
         this.setTitle(title);
         this.setQuestion(question);
@@ -57,7 +58,7 @@ public class Poll  implements Serializable {
         this.setChoice(choice);
 
     }
-    public void update_Poll(String title, String question, String[] choice){
+    public void update_Poll(String title, String question, Hashtable<String,Integer> choice){
         this.setTitle(title);
         this.setQuestion(question);
         this.setChoice(choice);
