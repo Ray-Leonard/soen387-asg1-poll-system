@@ -15,6 +15,7 @@ public class Poll  implements Serializable {
     private String question;
     private status poll_status;
     private Hashtable<String,Integer> choice;
+
     public enum status{
         created,running,released
     }
@@ -51,6 +52,8 @@ public class Poll  implements Serializable {
     public void setChoice(Hashtable<String,Integer> choice) {
         this.choice = choice;
     }
+
+
 
     public void create_Poll(String title, String question, Hashtable<String,Integer> choice)  {
 
@@ -96,8 +99,15 @@ public class Poll  implements Serializable {
     public void unrelease_Poll(){
         this.setPoll_status(status.running);
     }
-    public void vote(int id, String choice){
-
+    public void vote(String id, String choice){
+        int count = 1;
+        Hashtable<String,Integer> newHash = this.getChoice();
+        if(newHash.containsKey(choice)==true){
+            count = newHash.get(choice);
+            count++;
+        }
+        newHash.put(choice, count);
+        this.setChoice(newHash);
     }
     public Hashtable<String, Integer> get_Poll_Result(){
         Hashtable<String, Integer> result = new Hashtable<>();

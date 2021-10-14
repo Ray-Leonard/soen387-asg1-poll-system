@@ -189,6 +189,19 @@
                     <td><button class="btn-outline-warning"><a href="close.jsp">Close</a></button></td>
 
                 </tr>
+                <%
+                    if(p.getPoll_status() == Poll.status.released){
+                %>
+                <tr>
+                    <td colspan="2">Poll result</td>
+                    <td><%=p.getChoice().get(str[0])%></td>
+                    <td><%=p.getChoice().get(str[1])%></td>
+                    <td><%=p.getChoice().get(str[2])%></td>
+                    <td colspan="7"> </td>
+                </tr>
+                <%
+                    }
+                %>
 
             </table>
 
