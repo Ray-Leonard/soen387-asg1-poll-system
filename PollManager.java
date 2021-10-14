@@ -7,68 +7,94 @@ import java.util.Date;
 
 public class PollManager {
 
-  private Poll poll;
+  private Poll poll = null;
 
-  public void CreatePoll(String name, String question, String[] choices) {
-    poll = new Poll(name, question, choices);
+  public void CreatePoll(String name, String question, String[] choices) throws Exception {
+    if (poll != null) {
+      throw new Exception("There is already an active poll.");
+    } else {
+      poll = new Poll(name, question, choices);
+    }
   }
 
-  public void UpdatePoll(String name, String question, String[] choices) {
-    poll.setName(name);
-    poll.setQuestion(question);
-    poll.setChoices(choices);
-    poll.setVotes();
-    poll.setStatus(PollStatus.created);
-  }
-
-  public void ClearPoll() {
-    poll.clearVotes();
-    if (poll.getStatus().equals(PollStatus.released)) {
+  public void UpdatePoll(String name, String question, String[] choices) throws Exception {
+    if (poll != null && (poll.getStatus().equals(PollStatus.created) || poll.getStatus().equals(PollStatus.running))) {
+      poll.setName(name);
+      poll.setQuestion(question);
+      poll.setChoices(choices);
+      poll.setVotes();
       poll.setStatus(PollStatus.created);
+    } else {
+      throw new Exception("Poll is not in created or running status.");
     }
   }
 
-  public void ClosePoll() {
-    if (poll.getStatus().equals(PollStatus.released)) {
+  public void ClearPoll() throws Exception {
+    if (poll != null && (poll.getStatus().equals(PollStatus.running) || poll.getStatus().equals(PollStatus.released))) {
+      poll.clearVotes();
+      if (poll.getStatus().equals(PollStatus.released)) {
+        poll.setStatus(PollStatus.created);
+      }
+    } else {
+      throw new Exception("Poll is not running or released.");
+    }
+  }
+
+  public void ClosePoll() throws Exception {
+    if (poll != null && poll.getStatus().equals(PollStatus.released)) {
       poll = null;
+    } else {
+      throw new Exception("Poll is not in released status.");
     }
   }
 
-  public void RunPoll() {
-    if (poll.getStatus().equals(PollStatus.created)) {
+  public void RunPoll() throws Exception {
+    if (poll != null && poll.getStatus().equals(PollStatus.created)) {
       poll.setStatus(PollStatus.running);
+    } else {
+      throw new Exception("Poll is not in created status.");
     }
   }
 
-  public void ReleasePoll() {
-    if (poll.getStatus().equals(PollStatus.running)) {
+  public void ReleasePoll() throws Exception {
+    if (poll != null && poll.getStatus().equals(PollStatus.running)) {
       poll.setStatus(PollStatus.released);
       poll.setReleasedDate(new Date());
+    } else {
+      throw new Exception("Poll is not in running status.");
     }
   }
 
-  public void UnreleasePoll() {
-    if (poll.getStatus().equals(PollStatus.released)) {
+  public void UnreleasePoll() throws Exception {
+    if (poll != null && poll.getStatus().equals(PollStatus.released)) {
       poll.setStatus(PollStatus.running);
+    } else {
+      throw new Exception("Poll is not in released status.");
     }
   }
 
-  public void Vote(String participant, int choice) {
-    if (poll.getStatus().equals(PollStatus.running)) {
+  public void Vote(String participant, int choice) throws Exception {
+    if (poll != null && poll.getStatus().equals(PollStatus.running)) {
       poll.vote(participant, choice);
+    } else {
+      throw new Exception("Poll is not in running status");
     }
   }
 
-  public Hashtable<String, Integer> GetPollResults() {
-    Hashtable<String, Integer> results = new Hashtable<>();
-    for (int i = 0; i < poll.getChoices().length; ++i) {
-      results.put(poll.getChoices()[i], poll.getVotes()[i]);
+  public Hashtable<String, Integer> GetPollResults() throws Exception {
+    if (poll != null && poll.getStatus().equals(PollStatus.released)) {
+      Hashtable<String, Integer> results = new Hashtable<>();
+      for (int i = 0; i < poll.getChoices().length; ++i) {
+        results.put(poll.getChoices()[i], poll.getVotes()[i]);
+      }
+      return results;
+    } else {
+      throw new Exception("Poll is not in released status");
     }
-    return results;
   }
 
-  public void DownloadPollDetails(PrintWriter output, String filename) {
-    if (poll.getStatus().equals(PollStatus.released)) {
+  public void DownloadPollDetails(PrintWriter output, String filename) throws Exception{
+    if (poll != null && poll.getStatus().equals(PollStatus.released)) {
       String pollname = poll.getName();
       String question = poll.getQuestion();
       String[] choices = poll.getChoices();
@@ -93,6 +119,8 @@ public class PollManager {
       } catch (Exception e) {
         System.out.println("failed to create result file");
       }
+    } else {
+      throw new Exception("Poll is not in released status");
     }
   }
 
