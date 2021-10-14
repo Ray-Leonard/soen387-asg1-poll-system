@@ -17,6 +17,14 @@
 </head>
 <body>
 <h2>Welcome, You are:</h2><br>
+<%
+    if ("post".equalsIgnoreCase(request.getMethod()) && request.getParameter("exit")!=null){
+        session.removeAttribute("sessionId");
+        session.removeAttribute("poll");
+        request.changeSessionId();
+        //out.println(session.getId());
+    }
+%>
 <div class="row">
     <div class="col-sm-4">
         <button class="btn btn-info"><a href="vote.jsp">User</a><br></button>

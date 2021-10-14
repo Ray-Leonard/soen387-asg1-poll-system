@@ -22,5 +22,10 @@
 </form>
     </div>
 </div>
+<div class="col-sm-4">
+    <div align = "right">
+        <p><a href="index.jsp">Click Back</a> </p>
+    </div>
+</div>
 </body>
 </html>

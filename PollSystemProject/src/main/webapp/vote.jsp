@@ -29,7 +29,7 @@
 %>
 <div class="row">
     <div class="col-sm-4">
-        <form action="" method="post">
+        <form action="VoteServlet" method="post">
             <h2>Title: <%=p.getTitle()%></h2>
             <br>
             <h3>Question: <%=p.getQuestion()%></h3>
@@ -42,32 +42,96 @@
                     i++;
                 }
             %>
-            <p>
+            <label for="poll">
                 Please select your choice:
-            </p>
-            <input type="radio" id="choice1" name="choice1" value="choice1">
-            <label for="choice1"><%=str[0]%></label><br>
-            <input type="radio" id="choice2" name="choice2" value="choice2">
-            <label for="choice2"><%=str[1]%></label><br>
-            <input type="radio" id="choice3" name="choice3" value="choice3">
-            <label for="choice3"><%=str[2]%></label><br>
+            </label>
+            <select class="custom-select" name="poll" id="poll">
+                <option value=<%=str[0]%> ><%=str[0]%></option>
+                <option value=<%=str[1]%> ><%=str[1]%></option>
+                <option value=<%=str[2]%> ><%=str[2]%></option>
+            </select>
+            <br><br>
+            <input type="submit" name="vote" value="Vote">
         </form>
 
         <div align = "right">
             <p><a href="index.jsp">Click Back</a> </p>
         </div>
+        <div align="center">
+            <form action="index.jsp" method="post">
+                <input class="btn-warning" type="submit" name="exit" value="Exit">
+            </form>
+        </div>
+
     </div>
 </div>
-<%
 
+
+<%
+    if(session.getAttribute("sessionId") != null && session.getAttribute("poll") != null) {
+        String sessionId = (String) session.getAttribute("sessionId");
+        String poll = (String) session.getAttribute("poll");
+        p.vote(sessionId,poll);
+        out.println("<h3>Successful vote</h3>");
+
+    }
+%>
+<%
         }else {
-            out.println("<h2>No poll is running!</h3>");
+            if(p.getPoll_status() != Poll.status.released){
+            out.println("<h2>No poll is running!</h2>");
+            }
+            else
+            {
+                out.println("<h3>The Poll is released, Please check its result:</h3>");
+
+%>
+<%
+    Enumeration<String> keys = p.getChoice().keys();
+    String[] str = new String[3];
+    int i =0;
+    while(keys.hasMoreElements()){
+        str[i] = keys.nextElement();
+        i++;
+    }
+%>
+<div class="row">
+    <div class="col-sm-4">
+        <table class="table table-responsive" cellpadding = "0" width="100%">
+            <tr>
+                <th>Title</th>
+                <th><%=p.getTitle()%></th>
+            </tr>
+            <tr>
+                <td>Question</td>
+                <td><%=p.getQuestion()%></td>
+            </tr>
+            <tr>
+                <td>A. <%=str[0]%></td>
+                <td><%=p.getChoice().get(str[0])%></td>
+            </tr>
+            <tr>
+                <td>B. <%=str[1]%></td>
+                <td><%=p.getChoice().get(str[1])%></td>
+            </tr>
+            <tr>
+                <td>C. <%=str[2]%></td>
+                <td><%=p.getChoice().get(str[2])%></td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+<%
+    }
 %>
 <div class="col-sm-4">
 <div align = "right">
     <p><a href="index.jsp">Click Back</a> </p>
 </div>
 </div>
+
 <%
         }
 %>
