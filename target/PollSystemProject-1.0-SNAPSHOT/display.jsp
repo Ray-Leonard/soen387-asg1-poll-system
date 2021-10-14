@@ -56,8 +56,6 @@
 
     %>
 
-
-
     <%
         if("post".equalsIgnoreCase(request.getMethod()) && request.getParameter("update")!=null){
             if(p.getPoll_status()== Poll.status.created || p.getPoll_status()== Poll.status.running)
