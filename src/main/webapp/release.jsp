@@ -32,15 +32,15 @@
     <div class="col-sm-4">
         <jsp:useBean id="p" class="com.example.pollsystemproject.Poll" scope="application">
         </jsp:useBean>
-        <%
-            Enumeration<String> keys = p.getChoice().keys();
-            String[] str = new String[3];
-            int i =0;
-            while(keys.hasMoreElements()){
-                str[i] = keys.nextElement();
-                i++;
-            }
-        %>
+<%--        <%--%>
+<%--            Enumeration<String> keys = p.getChoice().keys();--%>
+<%--            String[] str = new String[3];--%>
+<%--            int i =0;--%>
+<%--            while(keys.hasMoreElements()){--%>
+<%--                str[i] = keys.nextElement();--%>
+<%--                i++;--%>
+<%--            }--%>
+<%--        %>--%>
 
         <form   action="display.jsp" method="post">
             <div align="left">
@@ -53,15 +53,15 @@
             </div><br>
             <div align="left" >
                 <label class="form-label">Choice1: </label>
-                <input type="text" class="form-control" placeholder=<%=str[0]%> name="choice1" disabled>
+                <input type="text" class="form-control" placeholder=<%=p.getChoice()[0]%> name="choice1" disabled>
             </div><br>
             <div align="left" >
                 <label class="form-label">Choice2: </label>
-                <input type="text" class="form-control" placeholder=<%=str[1]%> name="choice2" disabled>
+                <input type="text" class="form-control" placeholder=<%=p.getChoice()[1]%> name="choice2" disabled>
             </div><br>
             <div align="left" >
                 <label class="form-label">Choice3: </label>
-                <input type="text" class="form-control" placeholder=<%=str[2]%> name="choice3" disabled>
+                <input type="text" class="form-control" placeholder=<%=p.getChoice()[2]%> name="choice3" disabled>
             </div><br>
             <input type="submit" id="release" value="Release" name="release" class="btn btn-info">
 

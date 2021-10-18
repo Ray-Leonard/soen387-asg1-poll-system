@@ -18,7 +18,7 @@
     <div class="col-sm-4">
 <form action="Login" method="post">
     Enter password:<input type="password" name="pass"><br>
-    <input type="submit" value="login">
+    <input class="btn btn-warning" type="submit" value="login">
 </form>
     </div>
 </div>

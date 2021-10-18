@@ -46,7 +46,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/main/webapp/WEB-INF/jstl-1.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/main/webapp/WEB-INF/lib/jstl-1.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

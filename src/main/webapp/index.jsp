@@ -27,7 +27,7 @@
 %>
 <div class="row">
     <div class="col-sm-4">
-        <button class="btn btn-info"><a href="vote.jsp">User</a><br></button>
+        <button class="btn btn-info"><a style="color: white" href="vote.jsp">User</a><br></button>
         <br><br>
         <button class="btn btn-warning"><a href="login.jsp">Manager</a></button>
     </div>

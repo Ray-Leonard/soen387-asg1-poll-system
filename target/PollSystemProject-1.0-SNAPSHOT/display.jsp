@@ -9,6 +9,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page errorPage="error.jsp" %>
 <html>
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
@@ -34,112 +35,69 @@
     </jsp:useBean>
     <%
         if("post".equalsIgnoreCase(request.getMethod()) && request.getParameter("create")!=null){
-            if(p.getPoll_status()==null)
-            {
+
                 String title=request.getParameter("title");
                 String question=request.getParameter("question");
-                Hashtable<String,Integer> choices = new Hashtable<>();
+                String[] choices = new String[3];
                 String choice1 = request.getParameter("choice1");
                 String choice2 = request.getParameter("choice2");
                 String choice3 = request.getParameter("choice3");
-                choices.put(choice1,0);
-                choices.put(choice2,0);
-                choices.put(choice3,0);
+                choices[0] = choice1;
+                choices[1] = choice2;
+                choices[2] = choice3;
                 p.create_Poll(title,question,choices);
-    %>
 
-    <%
-    }else {
-        out.println("<h2>Error! You already created one poll!</h3>");
-            }
         }
 
     %>
 
     <%
         if("post".equalsIgnoreCase(request.getMethod()) && request.getParameter("update")!=null){
-            if(p.getPoll_status()== Poll.status.created || p.getPoll_status()== Poll.status.running)
-            {
-    %>
-    <%
+
         String title=request.getParameter("title");
         String question=request.getParameter("question");
-        Hashtable<String,Integer> choices = new Hashtable<>();
+        String[] choices = new String[3];
         String choice1 = request.getParameter("choice1");
         String choice2 = request.getParameter("choice2");
         String choice3 = request.getParameter("choice3");
-        choices.put(choice1,0);
-        choices.put(choice2,0);
-        choices.put(choice3,0);
+        choices[0] = choice1;
+        choices[1] = choice2;
+        choices[2] = choice3;
         p.update_Poll(title,question,choices);
-    %>
 
-
-    <%}else{out.println("Error! Your poll status is not created or running!");
-
-                }
-            }
+        }
     %>
     <%
         if("post".equalsIgnoreCase(request.getMethod()) && request.getParameter("run")!=null){
-            if(p.getPoll_status()== Poll.status.created)
-            {
-    %>
-    <%
+
         p.run_Poll();
-    %>
-    <%
-            }else{out.println("Error! Your poll status is not created!");
-            }
         }
     %>
     <%
         if("post".equalsIgnoreCase(request.getMethod()) && request.getParameter("release")!=null){
-            if(p.getPoll_status()== Poll.status.running)
-            {
+
                 p.release_Poll();
-            }
-            else{
-                out.println("Error! Your poll status is not running!");
-            }
         }
     %>
     <%
         if("post".equalsIgnoreCase(request.getMethod()) && request.getParameter("unrelease")!=null){
-            if(p.getPoll_status()== Poll.status.released)
-            {
                 p.unrelease_Poll();
-            }
-            else{
-                out.println("Error! Your poll status is not released!");
-            }
         }
     %>
 
     <%
         if("post".equalsIgnoreCase(request.getMethod()) && request.getParameter("clear")!=null){
-            if(p.getPoll_status()== Poll.status.released || p.getPoll_status()== Poll.status.running )
-            {
+
                 p.clear_Poll();
-            }
-            else{
-                out.println("Error! Your poll status is not released or running!");
-            }
         }
 %>
 
 
     <%
         if("post".equalsIgnoreCase(request.getMethod()) && request.getParameter("close")!=null){
-            if(p.getPoll_status()== Poll.status.released)
-            {
                  p.close_Poll();
                  RequestDispatcher rd = request.getRequestDispatcher("create.jsp");
                  rd.forward(request,response);
-            }
-            else{
-                 out.println("Error! Your poll status is not released!");
-                }
         }
     %>
     <div class="row">
@@ -166,18 +124,10 @@
                 <tr>
                     <td><%=p.getTitle()%> </td>
                     <td><%=p.getQuestion()%>  </td>
-                    <%
-                        Enumeration<String> keys = p.getChoice().keys();
-                        String[] str = new String[3];
-                        int i =0;
-                        while(keys.hasMoreElements()){
-                            str[i] = keys.nextElement();
-                            i++;
-                        }
-                    %>
-                    <td><%=str[0]%></td>
-                    <td><%=str[1]%></td>
-                    <td><%=str[2]%></td>
+
+                    <td><%=p.getChoice()[0]%></td>
+                    <td><%=p.getChoice()[1]%></td>
+                    <td><%=p.getChoice()[2]%></td>
                     <td><%=p.getPoll_status()%> </td>
                     <td><button class="btn-outline-warning"><a href="update.jsp">Update</a></button></td>
                     <td><button class="btn-outline-warning"><a href="run.jsp">Run</a></button></td>
@@ -189,12 +139,20 @@
                 </tr>
                 <%
                     if(p.getPoll_status() == Poll.status.released){
+                        Enumeration<String> keys = p.get_Poll_Result().keys();
+                            int[] result = new int[3];
+                            int i =0;
+                            while(keys.hasMoreElements()){
+                                result[i] = p.get_Poll_Result().get(keys.nextElement());
+                                i++;
+                            }
+
                 %>
                 <tr>
                     <td colspan="2">Poll result</td>
-                    <td><%=p.getChoice().get(str[0])%></td>
-                    <td><%=p.getChoice().get(str[1])%></td>
-                    <td><%=p.getChoice().get(str[2])%></td>
+                    <td><%=result[0]%></td>
+                    <td><%=result[1]%></td>
+                    <td><%=result[2]%></td>
                     <td colspan="7"> </td>
                 </tr>
                 <%

@@ -1,6 +1,6 @@
-<%@ page import="java.util.Hashtable" %>
 <%@ page import="java.util.Enumeration" %>
-<%@ page import="com.example.pollsystemproject.Poll" %><%--
+<%@ page import="com.example.pollsystemproject.Poll" %>
+<%--
   Created by IntelliJ IDEA.
   User: liuhe
   Date: 2021-10-13
@@ -14,6 +14,7 @@
     <title>Vote</title>
     <link href = "bootstrap/css/bootstrap.css" rel = "stylesheet" type="text/css">
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
 <h1>Welcome to vote </h1><br>
@@ -33,22 +34,14 @@
             <h2>Title: <%=p.getTitle()%></h2>
             <br>
             <h3>Question: <%=p.getQuestion()%></h3>
-            <%
-                Enumeration<String> keys = p.getChoice().keys();
-                String[] str = new String[3];
-                int i =0;
-                while(keys.hasMoreElements()){
-                    str[i] = keys.nextElement();
-                    i++;
-                }
-            %>
+
             <label for="poll">
                 Please select your choice:
             </label>
             <select class="custom-select" name="poll" id="poll">
-                <option value=<%=str[0]%> ><%=str[0]%></option>
-                <option value=<%=str[1]%> ><%=str[1]%></option>
-                <option value=<%=str[2]%> ><%=str[2]%></option>
+                <option value=<%=p.getChoice()[0]%> ><%=p.getChoice()[0]%></option>
+                <option value=<%=p.getChoice()[1]%> ><%=p.getChoice()[1]%></option>
+                <option value=<%=p.getChoice()[2]%> ><%=p.getChoice()[2]%></option>
             </select>
             <br><br>
             <input type="submit" name="vote" value="Vote">
@@ -72,7 +65,7 @@
         String sessionId = (String) session.getAttribute("sessionId");
         String poll = (String) session.getAttribute("poll");
         p.vote(sessionId,poll);
-        out.println("<h3>Successful vote</h3>");
+        out.println("<h3>Successful vote!</h3>");
 
     }
 %>
@@ -84,42 +77,43 @@
             else
             {
                 out.println("<h3>The Poll is released, Please check its result:</h3>");
+                Enumeration<String> keys = p.get_Poll_Result().keys();
+                String[] choices = new String[3];
+                int i =0;
+                while(keys.hasMoreElements()){
+                    choices[i] = keys.nextElement();
+                    i++;
+                }
 
 %>
-<%
-    Enumeration<String> keys = p.getChoice().keys();
-    String[] str = new String[3];
-    int i =0;
-    while(keys.hasMoreElements()){
-        str[i] = keys.nextElement();
-        i++;
+<script type="text/javascript">
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Choices', 'Results'],
+            ['<%=choices[0]%>',   <%=p.get_Poll_Result().get(choices[0])%>],
+            ['<%=choices[1]%>',   <%=p.get_Poll_Result().get(choices[1])%>],
+            ['<%=choices[2]%>',   <%=p.get_Poll_Result().get(choices[2])%>]
+        ]);
+
+        var options = {
+            title: 'The Poll Result',
+            pieHole: 0.4,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
     }
-%>
-<div class="row">
-    <div class="col-sm-4">
-        <table class="table table-responsive" cellpadding = "0" width="100%">
-            <tr>
-                <th>Title</th>
-                <th><%=p.getTitle()%></th>
-            </tr>
-            <tr>
-                <td>Question</td>
-                <td><%=p.getQuestion()%></td>
-            </tr>
-            <tr>
-                <td>A. <%=str[0]%></td>
-                <td><%=p.getChoice().get(str[0])%></td>
-            </tr>
-            <tr>
-                <td>B. <%=str[1]%></td>
-                <td><%=p.getChoice().get(str[1])%></td>
-            </tr>
-            <tr>
-                <td>C. <%=str[2]%></td>
-                <td><%=p.getChoice().get(str[2])%></td>
-            </tr>
-        </table>
+</script>
+<div id="donutchart" style="width: 900px; height: 500px;"></div>
 
+
+<div class="col-sm-4">
+    <div align = "center">
+    <form action="download.jsp" method="get">
+        <input class="btn" type="submit" name="download" value="Download">
+    </form>
     </div>
 </div>
 
@@ -127,9 +121,9 @@
     }
 %>
 <div class="col-sm-4">
-<div align = "right">
-    <p><a href="index.jsp">Click Back</a> </p>
-</div>
+    <div align = "center">
+        <p><a href="index.jsp">Click Back</a></p>
+    </div>
 </div>
 
 <%

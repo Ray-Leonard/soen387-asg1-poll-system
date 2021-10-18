@@ -2,8 +2,14 @@ package com.example.pollsystemproject;
 
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -14,7 +20,9 @@ public class Poll  implements Serializable {
     private String title;
     private String question;
     private status poll_status;
-    private Hashtable<String,Integer> choice;
+    private String[] choice;
+    private Hashtable<String,String> vote = new Hashtable<>();
+    private LocalDateTime releaseDate;
 
     public enum status{
         created,running,released
@@ -44,76 +52,157 @@ public class Poll  implements Serializable {
         this.poll_status = poll_status;
     }
 
-    public Hashtable<String,Integer> getChoice() {
+    public String[] getChoice() {
 
         return choice;
     }
 
-    public void setChoice(Hashtable<String,Integer> choice) {
+    public void setChoice(String[] choice) {
         this.choice = choice;
     }
 
-
-
-    public void create_Poll(String title, String question, Hashtable<String,Integer> choice)  {
-
-        this.setTitle(title);
-        this.setQuestion(question);
-        this.setPoll_status(status.created);
-        this.setChoice(choice);
-
-    }
-    public void update_Poll(String title, String question, Hashtable<String,Integer> choice){
-        this.setTitle(title);
-        this.setQuestion(question);
-        this.setChoice(choice);
-        this.setPoll_status(status.created);
+    public Hashtable<String, String> getVote() {
+        return vote;
     }
 
-    public void clear_Poll(){
-        Enumeration<String> keys = this.getChoice().keys();
-        int i =0;
-        while(keys.hasMoreElements()){
-            this.getChoice().replace(keys.nextElement(), 0);
-            i++;
-        }
-        if(this.poll_status == status.released){
+    public void setVote(Hashtable<String, String> vote) {
+        this.vote = vote;
+    }
+
+    public LocalDateTime getReleaseDate() {
+        LocalDateTime date = this.releaseDate;
+        return date;
+    }
+
+    public void setReleaseDate(LocalDateTime date) {
+        this.releaseDate = date;
+    }
+
+    public void create_Poll(String title, String question, String[] choice) throws Exception {
+        if(this.getPoll_status()==null){
+            this.setTitle(title);
+            this.setQuestion(question);
             this.setPoll_status(status.created);
+            this.setChoice(choice);
+        }else {
+            throw new Exception("<h3>Error! You already created one poll!</h3>");
+        }
+
+
+    }
+    public void update_Poll(String title, String question, String[] choice) throws Exception {
+        if(this.getPoll_status()== Poll.status.created || this.getPoll_status()== Poll.status.running){
+            this.setTitle(title);
+            this.setQuestion(question);
+            this.setChoice(choice);
+            this.setPoll_status(status.created);
+        }else {
+            throw new Exception("<h3>Error! Your poll status is not created or running!</h3>");
+        }
+
+    }
+
+    public void clear_Poll() throws Exception {
+        if(this.getPoll_status()== Poll.status.released || this.getPoll_status()== Poll.status.running )
+        {
+            this.setVote(new Hashtable<String,String>());
+            if(this.poll_status == status.released){
+                this.setPoll_status(status.created);
+            }
+        }else {
+            throw new Exception("<h3>Error! Your poll status is not released or running!</h3>");
+        }
+
+    }
+
+    public void close_Poll() throws Exception {
+        if(this.getPoll_status()== Poll.status.released)
+        {
+            this.setTitle(null);
+            this.setQuestion(null);
+            this.setChoice(null);
+            this.setPoll_status(null);
+        }else {
+            throw new Exception("<h3>Error! Your poll status is not released!</h3>");
         }
     }
-
-    public void close_Poll(){
-        this.setTitle(null);
-        this.setQuestion(null);
-        this.setChoice(null);
-        this.setPoll_status(null);
-
-    }
-    public void run_Poll(){
-        this.setPoll_status(status.running);
-
-    }
-    public void release_Poll(){
-        this.setPoll_status(status.released);
-    }
-    public void unrelease_Poll(){
-        this.setPoll_status(status.running);
-    }
-    public void vote(String id, String choice){
-        int count = 1;
-        Hashtable<String,Integer> newHash = this.getChoice();
-        if(newHash.containsKey(choice)==true){
-            count = newHash.get(choice);
-            count++;
+    public void run_Poll() throws Exception {
+        if(this.getPoll_status()== Poll.status.created)
+        {
+            this.setPoll_status(status.running);
+        }else {
+            throw new Exception("<h3>Error! Your poll status is not created!</h3>");
         }
-        newHash.put(choice, count);
-        this.setChoice(newHash);
+
+
+    }
+    public void release_Poll() throws Exception {
+        if(this.getPoll_status()== Poll.status.running)
+        {
+            LocalDateTime ldt = LocalDateTime.now();
+            this.setReleaseDate(ldt);
+            this.setPoll_status(status.released);
+        }else{
+            throw new Exception("<h3>Error! Your poll status is not running!</h3>");
+        }
+
+    }
+    public void unrelease_Poll() throws Exception {
+        if(this.getPoll_status()== Poll.status.released)
+        {
+            this.setPoll_status(status.running);
+        }else {
+            throw new Exception("<h3>Error! Your poll status is not released!</h3>");
+        }
+
+    }
+    public void vote(String id, String choice) throws Exception {
+        if(this.getPoll_status()== status.running){
+            Hashtable<String,String> newHash = this.getVote();
+            newHash.put(id, choice);
+            this.setVote(newHash);
+        }else {
+            throw new Exception("<h3>Error! Your poll status is not running!</h3>");
+        }
+
     }
     public Hashtable<String, Integer> get_Poll_Result(){
         Hashtable<String, Integer> result = new Hashtable<>();
+        String[] choices = this.getChoice();
+        for(int i =0; i<choices.length;i++){
+            result.put(choices[i],0);
+        }
+        Hashtable<String,String> votes = this.getVote();
+        Enumeration<String> keys = votes.keys();
+        while(keys.hasMoreElements()){
+            String key = keys.nextElement();
+           if(result.containsKey(votes.get(key))){
+               int count = result.get(votes.get(key));
+               result.put(votes.get(key), count + 1);
+           }
+        }
         return result;
     }
-    public void down_load_Poll_Details(PrintWriter output, String filename){
+    public String download_Poll_Details(PrintWriter output, String filename)  {
+        LocalDateTime date = this.getReleaseDate();
+        String question = this.getQuestion();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String formattedDate = date.format(dtf);
+        filename = filename + "-" + formattedDate + ".txt";
+
+        Hashtable<String, Integer> votes = this.get_Poll_Result();
+        output.write("Filename: " + filename);
+        output.write("\n");
+        output.write("Question: " + question);
+        output.write("\n");
+        Enumeration<String> keys = votes.keys();
+        int count = 0;
+        while(keys.hasMoreElements()){
+            String key = keys.nextElement();
+            output.write("Choice[" + count + "]: " + key + " has " + votes.get(key) + " votes\n");
+            count++;
+        }
+        return filename;
 
     }
 

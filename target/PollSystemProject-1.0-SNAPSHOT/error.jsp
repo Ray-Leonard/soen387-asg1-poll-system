@@ -11,9 +11,12 @@
     <title>Error page</title>
 </head>
 <body>
-<h1>Opps...</h1>
-<p>Sorry an error occurred</p>
-<%=exception %>
+<h1 style="color: red">Opps...</h1>
+<p style="color: red">Sorry an error occurred!</p>
+<%=exception.getMessage() %>
+<div align = "center">
+    <p><a href="display.jsp">Click Back</a> </p>
+</div>
 
 </body>
 </html>

@@ -32,15 +32,15 @@
     <div class="col-sm-4">
         <jsp:useBean id="p" class="com.example.pollsystemproject.Poll" scope="application">
         </jsp:useBean>
-        <%
-            Enumeration<String> keys = p.getChoice().keys();
-            String[] str = new String[3];
-            int i =0;
-            while(keys.hasMoreElements()){
-                str[i] = keys.nextElement();
-                i++;
-            }
-        %>
+<%--        <%--%>
+<%--            Enumeration<String> keys = p.getChoice().keys();--%>
+<%--            String[] str = new String[3];--%>
+<%--            int i =0;--%>
+<%--            while(keys.hasMoreElements()){--%>
+<%--                str[i] = keys.nextElement();--%>
+<%--                i++;--%>
+<%--            }--%>
+<%--        %>--%>
 
         <form   action="display.jsp" method="post">
             <div align="left">
@@ -53,15 +53,15 @@
             </div><br>
             <div align="left" >
                 <label class="form-label">Choice1: </label>
-                <input type="text" class="form-control" value=<%=str[0]%> name="choice1" required>
+                <input type="text" class="form-control" value=<%=p.getChoice()[0]%> name="choice1" required>
             </div><br>
             <div align="left" >
                 <label class="form-label">Choice2: </label>
-                <input type="text" class="form-control" value=<%=str[1]%> name="choice2" required>
+                <input type="text" class="form-control" value=<%=p.getChoice()[1]%> name="choice2" required>
             </div><br>
             <div align="left" >
                 <label class="form-label">Choice3: </label>
-                <input type="text" class="form-control" value=<%=str[2]%> name="choice3" required>
+                <input type="text" class="form-control" value=<%=p.getChoice()[2]%> name="choice3" required>
             </div><br>
             <input type="submit" id="update" value="Update" name="update" class="btn btn-info">
 
