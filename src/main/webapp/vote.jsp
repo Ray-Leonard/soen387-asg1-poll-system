@@ -71,17 +71,17 @@
         String sessionId = (String) session.getAttribute("sessionId");
         String poll = (String) session.getAttribute("poll");
         p.vote(sessionId,poll);
-        System.out.println("<h3>Successful vote!</h3>");
+        out.println("<h3>Successful vote!</h3>");
     }
 %>
 <%
         }else {
             if(p.getPoll_status() != Poll.status.released){
-                System.out.println("<h2>No poll is running!</h2>");
+                out.println("<h2>No poll is running!</h2>");
             }
             else
             {
-                System.out.println("<h3>The Poll is released, Please check its result:</h3>");
+                out.println("<h3>The Poll is released, Please check its result:</h3>");
                 Enumeration<String> keys = p.get_Poll_Result().keys();
                 String[] choices = new String[3];
                 int i =0;
