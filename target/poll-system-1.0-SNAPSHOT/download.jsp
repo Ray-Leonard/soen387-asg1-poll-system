@@ -38,13 +38,13 @@
     out.println("FileName: " + filename);
 %>
 <br><br>
-<div class="row">
-    <div class="col-sm-4">
+
+    <div class="col-md-7 col-lg-8">
         <form action="download" method="get">
             <input class="btn btn-warning" type="submit" name="yes" value="Yes">
         </form>
     </div>
-</div>
+
 <%
     }
 %>

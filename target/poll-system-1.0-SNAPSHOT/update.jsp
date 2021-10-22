@@ -35,8 +35,7 @@
     }
 %>
 <h2>Update a Poll</h2><br>
-<div class="row">
-    <div class="col-sm-4">
+    <div class="col-md-7 col-lg-8">
         <jsp:useBean id="p" class="com.example.pollsystemproject.Poll" scope="application">
         </jsp:useBean>
 <%--        <%--%>
@@ -78,8 +77,6 @@
         </div>
     </div>
 
-
-</div>
 <div align = "right">
     <form action="Logout" method="post">
         <input type="submit" value="Logout">

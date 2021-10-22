@@ -108,8 +108,7 @@
                  rd.forward(request,response);
         }
     %>
-    <div class="row">
-        <div class="col-sm-10">
+        <div class="col-md-7 col-lg-8">
             <table id="tbl-student" class="table table-responsive table-bordered" cellpadding = "0" width="100%">
                 <thead>
                 <tr>
@@ -118,15 +117,7 @@
                     <th>Choice1 </th>
                     <th>Choice2 </th>
                     <th>Choice3 </th>
-                    <th>Status </th>
-                    <th>Update</th>
-                    <th>Run</th>
-                    <th>Clear</th>
-                    <th>Release</th>
-                    <th>UnRelease</th>
-                    <th>Close</th>
-
-
+                    <th> Status </th>
                 </tr>
                 </thead>
                 <tr>
@@ -136,15 +127,9 @@
                     <td><%=p.getChoice()[0]%></td>
                     <td><%=p.getChoice()[1]%></td>
                     <td><%=p.getChoice()[2]%></td>
-                    <td><%=p.getPoll_status()%> </td>
-                    <td><button class="btn-outline-warning"><a href="update.jsp">Update</a></button></td>
-                    <td><button class="btn-outline-warning"><a href="run.jsp">Run</a></button></td>
-                    <td><button class="btn-outline-warning"><a href="clear.jsp">Clear</a></button></td>
-                    <td><button class="btn-outline-warning"><a href="release.jsp">Release</a></button></td>
-                    <td><button class="btn-outline-warning"><a href="unrelease.jsp">UnRelease</a></button></td>
-                    <td><button class="btn-outline-warning"><a href="close.jsp">Close</a></button></td>
+                    <td style="color:darkgreen"><%=p.getPoll_status()%> </td>
 
-                </tr>
+
                 <%
                     if(p.getPoll_status() == Poll.status.released){
                         Enumeration<String> keys = p.get_Poll_Result().keys();
@@ -161,7 +146,7 @@
                     <td><%=result[0]%></td>
                     <td><%=result[1]%></td>
                     <td><%=result[2]%></td>
-                    <td colspan="7"> </td>
+                    <td> </td>
                 </tr>
                 <%
                     }
@@ -169,8 +154,46 @@
 
             </table>
 
+            <h2> Actions </h2>
+            <table>
+                <td>
+                    <form action="update.jsp" method="post">
+                        <input type="submit" class="btn btn-info" id="update" value="Update" name="run">
+                    </form>
+                </td>
+                <td>
+                    <form action="display.jsp" method="post">
+                        <input type="submit" id="run" value="Run" name="run" class="btn btn-info">
+                    </form>
+                </td>
+
+                <td>
+                    <form action = "display.jsp" method="post">
+                        <input type="submit" id="clear" value="Clear" name="clear" class="btn btn-info" >
+                    </form>
+                </td>
+
+                <td>
+                    <form action = "display.jsp" method="post">
+                        <input type="submit" id="release" value="Release" name="release" class="btn btn-info" >
+                    </form>
+                </td>
+
+                <td>
+                    <form action = "display.jsp" method="post">
+                        <input type="submit" id="unrelease" value="UnRelease" name="unrelease" class="btn btn-info" >
+                    </form>
+                </td>
+
+                <td>
+                    <form action = "display.jsp" method="post">
+                        <input type="submit" id="close" value="Close" name="close" class="btn btn-info" >
+                    </form>
+                </td>
+                </tr>
+            </table>
+
         </div>
-    </div>
 <div align = "right">
     <form action="Logout" method="post">
         <input type="submit" value="Logout">

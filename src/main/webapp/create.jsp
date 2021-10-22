@@ -37,8 +37,8 @@
     }
 %>
 <h2>Create a Poll</h2><br>
-<div class="row">
-    <div class="col-sm-4">
+<div class="col-md-7 col-lg-8">
+<%--    <div class="col-sm-4">--%>
         <jsp:useBean id="p" class="com.example.pollsystemproject.Poll" scope="application">
         </jsp:useBean>
         <%
@@ -74,7 +74,7 @@
             <input type="reset" id="reset" value="reset" name="reset" class="btn btn-warning">
 
         </form>
-    </div>
+<%--    </div>--%>
 </div>
 
 

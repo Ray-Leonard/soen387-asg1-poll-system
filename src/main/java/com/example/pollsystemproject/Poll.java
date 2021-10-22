@@ -131,7 +131,7 @@ public class Poll  implements Serializable {
         {
             this.setPoll_status(status.running);
         }else {
-            throw new Exception("<h3>Error! Your poll status is not created!</h3>");
+            throw new Exception("<h3>Error! You can only run a poll when its state is \"created\"</h3>");
         }
 
 

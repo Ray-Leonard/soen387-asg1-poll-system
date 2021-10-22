@@ -36,8 +36,7 @@
         {
 
 %>
-<div class="row">
-    <div class="col-sm-4">
+    <div class="col-md-7 col-lg-8">
         <form action="VoteServlet" method="post">
             <h2>Title: <%=p.getTitle()%></h2>
             <br>
@@ -65,7 +64,6 @@
         </div>
 
     </div>
-</div>
 
 
 <%
@@ -74,7 +72,6 @@
         String poll = (String) session.getAttribute("poll");
         p.vote(sessionId,poll);
         out.println("<h3>Successful vote!</h3>");
-
     }
 %>
 <%
