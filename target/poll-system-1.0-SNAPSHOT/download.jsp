@@ -24,6 +24,7 @@
 </head>
 <body>
 <div id="header"></div>
+<div class="col-md-7 col-lg-8">
 <h1>Download the poll result? </h1><br>
 
 
@@ -39,11 +40,11 @@
 %>
 <br><br>
 
-    <div class="col-md-7 col-lg-8">
+
         <form action="download" method="get">
             <input class="btn btn-warning" type="submit" name="yes" value="Yes">
         </form>
-    </div>
+</div>
 
 <%
     }

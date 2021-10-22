@@ -16,6 +16,7 @@
     <title>Display</title>
     <link href = "bootstrap/css/bootstrap.css" rel = "stylesheet" type="text/css">
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <!-- for including headers -->
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script>
@@ -130,29 +131,10 @@
                     <td style="color:darkgreen"><%=p.getPoll_status()%> </td>
 
 
-                <%
-                    if(p.getPoll_status() == Poll.status.released){
-                        Enumeration<String> keys = p.get_Poll_Result().keys();
-                            int[] result = new int[3];
-                            int i =0;
-                            while(keys.hasMoreElements()){
-                                result[i] = p.get_Poll_Result().get(keys.nextElement());
-                                i++;
-                            }
 
-                %>
-                <tr>
-                    <td colspan="2">Poll result</td>
-                    <td><%=result[0]%></td>
-                    <td><%=result[1]%></td>
-                    <td><%=result[2]%></td>
-                    <td> </td>
-                </tr>
-                <%
-                    }
-                %>
 
             </table>
+
 
             <h2> Actions </h2>
             <table>
@@ -192,6 +174,43 @@
                 </td>
                 </tr>
             </table>
+
+            <%
+                if(p.getPoll_status() == Poll.status.released){
+                    Enumeration<String> keys = p.get_Poll_Result().keys();
+                    String[] choices = new String[3];
+                    int i =0;
+                    while(keys.hasMoreElements()){
+                        choices[i] = keys.nextElement();
+                        i++;
+                    }
+
+            %>
+            <script type="text/javascript">
+                google.charts.load("current", {packages:["corechart"]});
+                google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+                    var data = google.visualization.arrayToDataTable([
+                        ['Choices', 'Results'],
+                        ['<%=choices[0]%>',   <%=p.get_Poll_Result().get(choices[0])%>],
+                        ['<%=choices[1]%>',   <%=p.get_Poll_Result().get(choices[1])%>],
+                        ['<%=choices[2]%>',   <%=p.get_Poll_Result().get(choices[2])%>]
+                    ]);
+
+                    var options = {
+                        title: 'The Poll Result',
+                        pieHole: 0.4,
+                    };
+
+                    var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+                    chart.draw(data, options);
+                }
+            </script>
+            <div id="donutchart" style="width: 900px; height: 500px;"></div>
+
+            <%
+                }
+            %>
 
         </div>
 <div align = "right">
